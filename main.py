@@ -13,12 +13,11 @@ def settingsPage():
 
 @app.route('/generate')
 def generate():
-    if (request.args.get('query') != None):
-        response = g4f.ChatCompletion.create(
+    if request.args.get('query') is None:
+        return {'success': False, 'error': 'Please Enter A Proper Query Value!'}
+    else:
+        return g4f.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=[{"role":"user", "content": request.args.get('query')}],
+            messages=[{"role": "user", "content": request.args.get('query')}],
             stream=False,
         )
-        return response
-    else:
-        return {'success': False, 'error': 'Please Enter A Proper Query Value!'}
